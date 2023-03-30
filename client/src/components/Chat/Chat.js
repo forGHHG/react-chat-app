@@ -10,7 +10,7 @@ import TextContainer from "../TextContainer/TextContainer";
 import './Chat.css';
 
 let socket;
-const ENDPOINT = 'localhost:5000';
+const ENDPOINT = 'https://react-cha-server.fly.dev/';
 
 const Chat = () => {
     const [name, setName] = useState('');
