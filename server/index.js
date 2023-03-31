@@ -16,13 +16,17 @@ const io = socketio(server);
 app.use(cors());
 app.use(router);
 
+const KR_TIME_DIFF = 9 * 60 * 60 * 1000;
+
 io.on('connection', (socket) => {
     // console.log('>> 새로운 유저가 접속했습니다.');
 
     /* 'join'으로 정보 수신 */
     socket.on('join', ({name, room}, callback) => {
         const now = new Date();
-        const timsstamp = now.getHours().toString().padEnd(2,0) + ":" + now.getMinutes().toString().padStart(2,0);
+        const utcNow = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+        const koreaNow = new Date(utcNow + KR_TIME_DIFF);
+        const timsstamp = koreaNow.getHours().toString().padEnd(2,0) + ":" + koreaNow.getMinutes().toString().padStart(2,0);
 
         const { error, user } = addUser({id : socket.id, name, room});
 
@@ -51,7 +55,9 @@ io.on('connection', (socket) => {
     /* 메세지 전송 */
     socket.on('sendMessage', (message, callback) => {
         const now = new Date();
-        const timsstamp = now.getHours().toString().padEnd(2,0) + ":" + now.getMinutes().toString().padStart(2,0);
+        const utcNow = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+        const koreaNow = new Date(utcNow + KR_TIME_DIFF);
+        const timsstamp = koreaNow.getHours().toString().padEnd(2,0) + ":" + koreaNow.getMinutes().toString().padStart(2,0);
 
         const user = getUser(socket.id);
         io.to(user.room).emit('message', {user : user.name, text : message, timsstamp});
@@ -62,7 +68,9 @@ io.on('connection', (socket) => {
     /* 채팅방 나가기 */
     socket.on('disconnect', () => {
         const now = new Date();
-        const timsstamp = now.getHours().toString().padEnd(2,0) + ":" + now.getMinutes().toString().padStart(2,0);
+        const utcNow = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+        const koreaNow = new Date(utcNow + KR_TIME_DIFF);
+        const timsstamp = koreaNow.getHours().toString().padEnd(2,0) + ":" + koreaNow.getMinutes().toString().padStart(2,0);
         
         // 유저 삭제
         const user = removeUser(socket.id);

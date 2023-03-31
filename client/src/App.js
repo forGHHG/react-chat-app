@@ -8,8 +8,8 @@ import Chat from './components/Chat/Chat';
 const App = () => (
     <Router>
         <Routes>
-            <Route path="/" exact element={<Join />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path={`${process.env.PUBLIC_URL}/`} exact element={<Join />} />
+            <Route path={`${process.env.PUBLIC_URL}/chat`} element={<Chat />} />
         </Routes>
     </Router>
 );

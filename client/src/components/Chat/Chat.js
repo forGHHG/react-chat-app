@@ -10,7 +10,7 @@ import TextContainer from "../TextContainer/TextContainer";
 import './Chat.css';
 
 let socket;
-const ENDPOINT = 'https://react-cha-server.fly.dev/';
+const ENDPOINT = 'localhost:5000';
 
 const Chat = () => {
     const [name, setName] = useState('');
@@ -31,7 +31,7 @@ const Chat = () => {
         socket.emit('join', {name, room}, (error) => {
             // 콜백함수 정의
             if (error) {
-                window.location.replace("/");
+                window.location.replace(`${process.env.PUBLIC_URL}/`);
                 alert(error);
             }
         });
